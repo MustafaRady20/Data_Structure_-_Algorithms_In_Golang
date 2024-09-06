@@ -9,13 +9,17 @@ func main() {
 	linkedList.insertAtFront(10)
 	linkedList.insertAtFront(5)
 	linkedList.insertAtEnd(15)
-	linkedList.insertAt(5 ,7)
+	linkedList.insertAt(5, 7)
 
 	fmt.Println("List In Forward Manner.")
 	linkedList.printForward()
 	fmt.Println()
-	// fmt.Println("List in Backword Manner.")
-	// linkedList.printBackward()
+	fmt.Println("List in Backword Manner.")
+	linkedList.printBackward()
+	fmt.Println()
+	linkedList.deleteitem(10)
+	fmt.Println("List In Forward Manner after deletion .")
+	linkedList.printForward()
 	fmt.Println()
 
 }
@@ -87,24 +91,45 @@ func (d *doublyLinkedList) insertAt(pos int, data int) {
 
 	ptr := d.head
 	n := 1
-	for n < pos && ptr.next != nil{
+	for n < pos && ptr.next != nil {
 		ptr = ptr.next
 		n++
 	}
 
 	if ptr.next == nil {
-        ptr.next = newNode
-        newNode.prev = ptr
-        d.tail = newNode
-        return
-    }
-	
+		ptr.next = newNode
+		newNode.prev = ptr
+		d.tail = newNode
+		return
+	}
+
 	newNode.next = ptr.next
-    newNode.prev = ptr
-    if ptr.next != nil {
-        ptr.next.prev = newNode
-    }
-    ptr.next = newNode
+	newNode.prev = ptr
+	if ptr.next != nil {
+		ptr.next.prev = newNode
+	}
+	ptr.next = newNode
+}
+
+func (d *doublyLinkedList) deleteitem(data int) {
+	ptr := d.head
+
+	if d.head.data == data {
+		d.head = d.head.next
+		return
+	}
+	if d.tail.data == data {
+		d.tail = d.tail.prev
+		d.tail.next = nil
+		return
+	}
+	for ptr.data != data {
+		ptr = ptr.next
+	}
+	ptr.prev.next = ptr.next
+	ptr.next.prev = ptr.prev
+	ptr.next = nil
+	ptr.prev = nil
 }
 func (d *doublyLinkedList) printForward() {
 	ptr := d.head
