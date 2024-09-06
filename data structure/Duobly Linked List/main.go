@@ -9,11 +9,13 @@ func main() {
 	linkedList.insertAtFront(10)
 	linkedList.insertAtFront(5)
 	linkedList.insertAtEnd(15)
+	linkedList.insertAt(5 ,7)
+
 	fmt.Println("List In Forward Manner.")
 	linkedList.printForward()
 	fmt.Println()
-	fmt.Println("List in Backword Manner.")
-	linkedList.printBackward()
+	// fmt.Println("List in Backword Manner.")
+	// linkedList.printBackward()
 	fmt.Println()
 
 }
@@ -63,12 +65,50 @@ func (d *doublyLinkedList) insertAtEnd(data int) {
 	d.tail = newNode
 
 }
+
+func (d *doublyLinkedList) insertAt(pos int, data int) {
+	newNode := &Node{
+		data: data,
+		next: nil,
+		prev: nil,
+	}
+
+	if d.head == nil {
+		d.head = newNode
+		d.tail = newNode
+		return
+	}
+	if pos == 0 {
+		newNode.next = d.head
+		d.head.prev = newNode
+		d.head = newNode
+		return
+	}
+
+	ptr := d.head
+	n := 1
+	for n < pos && ptr.next != nil{
+		ptr = ptr.next
+		n++
+	}
+
+	if ptr.next == nil {
+        ptr.next = newNode
+        newNode.prev = ptr
+        d.tail = newNode
+        return
+    }
+	
+	newNode.next = ptr.next
+    newNode.prev = ptr
+    if ptr.next != nil {
+        ptr.next.prev = newNode
+    }
+    ptr.next = newNode
+}
 func (d *doublyLinkedList) printForward() {
 	ptr := d.head
 	for ptr != nil {
-		// if ptr.prev !=nil{
-		// 	fmt.Printf("<-(%d)->", ptr.prev.data)
-		// }
 		fmt.Printf("%d-->", ptr.data)
 		ptr = ptr.next
 	}
